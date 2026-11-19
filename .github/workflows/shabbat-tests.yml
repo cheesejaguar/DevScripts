@@ -1,0 +1,18 @@
+name: Shabbat guard tests
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  shabbat-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Guard unit tests
+        run: bash .github/shabbat/test_guard.sh
+      - name: Cron window scan
+        run: python3 .github/shabbat/test_crons.py

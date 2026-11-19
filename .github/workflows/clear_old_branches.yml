@@ -2,7 +2,8 @@ name: Cleanup Branches (Merged or Closed)
 
 on:
   schedule:
-    - cron: "0 3 * * *"   # daily at 03:00 UTC
+    # Mon-Fri 03:00 UTC. Sat/Sun 03:00 UTC are inside the Shabbat union. LS-126.
+    - cron: "0 3 * * 1-5"
   workflow_dispatch:
 
 permissions:
@@ -10,7 +11,12 @@ permissions:
   pull-requests: read
 
 jobs:
+  shabbat-guard:
+    uses: ./.github/workflows/shabbat-guard.yml
+
   cleanup:
+    needs: shabbat-guard
+    if: needs.shabbat-guard.outputs.proceed == 'true'
     runs-on: ubuntu-latest
 
     steps:

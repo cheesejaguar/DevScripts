@@ -13,6 +13,7 @@ permissions:
 jobs:
   shabbat-guard:
     uses: ./.github/workflows/shabbat-guard.yml
+    permissions: {}
 
   cleanup:
     needs: shabbat-guard
